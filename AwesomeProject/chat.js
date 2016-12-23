@@ -47,6 +47,17 @@ export default class AwesomeProject extends Component {
         )
       }
 
+     logoutUser(){
+          	  ApplozicChat.logoutUser(
+          	   {},
+                (response) => { console.log(response) },
+                (error) => { console.log(error) },
+
+              )
+
+            }
+
+
 	
   render() {
 
@@ -73,6 +84,13 @@ export default class AwesomeProject extends Component {
          
 		<Text style={styles.instructions} onPress={this.initiateChat.bind(this)}>
 			INITIATE CHAT</Text>
+
+
+		<Text style={styles.instructions} onPress={this.logoutUser.bind(this)}>
+        			Logout User</Text>
+
+
+
       </View>
     );
   }
