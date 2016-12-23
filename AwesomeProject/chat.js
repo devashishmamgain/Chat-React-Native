@@ -22,7 +22,7 @@ export default class AwesomeProject extends Component {
     )
   }
 
-  chatLogin() {
+ chatLogin() {
     ApplozicChat.login(
       {'userId' : 'react', 'displayName' : 'React', 'email' : 'react@applozic.com'},
       (response) => { console.log(response) },
@@ -31,7 +31,7 @@ export default class AwesomeProject extends Component {
   }
 
 
-  openChat() {
+ openChat() {
     ApplozicChat.openChat(
       {},
       (response) => { console.log(response) },
@@ -39,49 +39,46 @@ export default class AwesomeProject extends Component {
     )
   }
 
-  initiateChat(){
-    	  ApplozicChat.initiateChat(
-    	   {},
-          (response) => { console.log(response) },
-          (error) => { console.log(error) }
-        )
-      }
+ initiateChat(){
+    ApplozicChat.initiateChat(
+    {},
+    (response) => { console.log(response) },
+    (error) => { console.log(error) }
+   )
+ }
 
-     logoutUser(){
-          	  ApplozicChat.logoutUser(
-          	   {},
-                (response) => { console.log(response) },
-                (error) => { console.log(error) },
-              )}
+ logoutUser(){
+    ApplozicChat.logoutUser(
+     {},
+     (response) => { console.log(response) },
+     (error) => { console.log(error) },
+    )
+  }
 
+ contactUnreadCount(){
+    ApplozicChat.contactUnreadCount(
+    {'userId':'ak01'},
+    (response) => { alert(response)  },
+    (error) => { console.log(error) },
+   )
+  }
 
-     contactUnreadCount(){
-          ApplozicChat.contactUnreadCount(
-          	   {'userId':'ak01'},
-                         (response) => { alert(response)  },   //console.log(response)
-                          (error) => { console.log(error) },
-          )}
+channelUnreadCount(){
+    ApplozicChat.channelUnreadCount(
+    {'channelKey':'1234'},
+    (response) => { alert(response) },
+    (error) => { console.log(error) },
+   )
+  }
 
-         channelUnreadCount(){
-          ApplozicChat.channelUnreadCount(
-                   	   {'channelKey':'1234'},
-                                  (response) => { alert(response) },
-                                   (error) => { console.log(error) },
-                   )}
+totalUnreadCount(){
+    ApplozicChat.totalUnreadCount(
+    {},
+    (response) => { alert(response) },
+    (error) => { console.log(error) },
+   )
+ }
 
-          totalUnreadCount(){
-           ApplozicChat.totalUnreadCount(
-                        {},
-                          (response) => { alert(response) },
-                          (error) => { console.log(error) },
-                             )
-
-                     }
-
-
-
-
-	
   render() {
 
     return (
@@ -96,33 +93,27 @@ export default class AwesomeProject extends Component {
           Ok! Double tap R on your keyboard to reload,{'\n'}
           Shake or press menu button for dev menu
         </Text>
-
         <Text style={styles.instructions} onPress={this.chatLogin.bind(this)}>
           Login to Chat
-        </Text>
-
-        <Text style={styles.instructions} onPress={this.openChat.bind(this)}>
+         </Text>
+         <Text style={styles.instructions} onPress={this.openChat.bind(this)}>
           Open Chat
-        </Text>
-         
-		<Text style={styles.instructions} onPress={this.initiateChat.bind(this)}>
-			INITIATE CHAT</Text>
-
-
+         </Text>
+		 <Text style={styles.instructions} onPress={this.initiateChat.bind(this)}>
+		 INITIATE CHAT
+	     </Text>
 		<Text style={styles.instructions} onPress={this.logoutUser.bind(this)}>
-        			Logout User</Text>
-
-       <Text style={styles.instructions} onPress={this.contactUnreadCount.bind(this)}>
-                        	ContactUnreadCount</Text>
-
+         Logout User
+         </Text>
+        <Text style={styles.instructions} onPress={this.contactUnreadCount.bind(this)}>
+         ContactUnreadCount
+         </Text>
         <Text style={styles.instructions} onPress={this.channelUnreadCount.bind(this)}>
-                                 	ChannelUnreadCount</Text>
-
+         ChannelUnreadCount
+         </Text>
         <Text style={styles.instructions} onPress={this.totalUnreadCount.bind(this)}>
-                                 	TotalUnreadCount</Text>
-
-
-
+         TotalUnreadCount
+         </Text>
       </View>
     );
   }

@@ -80,7 +80,6 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         currentActivity.startActivity(intent);
     }
 
-
     @ReactMethod
     public void initiateChat(ReadableMap config, final Callback successCallback, Callback cancelCallback)
     {
@@ -114,10 +113,6 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         new UserClientService(currentActivity).logout();
     }
 
-
-
-
-
     @ReactMethod
     public void contactUnreadCount(ReadableMap config, final Callback successCallback, Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
@@ -132,8 +127,6 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         }
     }
 
-
-
     @ReactMethod
     public void channelUnreadCount(ReadableMap config, final Callback successCallback, Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
@@ -146,9 +139,7 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
             int channelUnreadCount = new MessageDatabaseService(currentActivity).getUnreadMessageCountForChannel((Integer.parseInt(config.getString("channelKey"))));
             successCallback.invoke(channelUnreadCount);
         }
-
     }
-
 
     @ReactMethod
     public void totalUnreadCount(ReadableMap config, final Callback successCallback, Callback cancelCallback) {
@@ -161,28 +152,13 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         if(config!=null) {
             int totalUnreadCount = new MessageDatabaseService(currentActivity).getTotalUnreadCount();
             successCallback.invoke(totalUnreadCount);
-
         }
     }
 
-
-
-
-
-
-
-
-
-
+    @Override
+    public void onActivityResult(Activity activity, final int requestCode, final int resultCode, final Intent intent) {}
 
     @Override
-    public void onActivityResult(Activity activity, final int requestCode, final int resultCode, final Intent intent) {
-
-    }
-
-    @Override
-    public void onNewIntent(Intent intent) {
-
-    }
+    public void onNewIntent(Intent intent) {}
 
 }
