@@ -30,6 +30,7 @@ export default class AwesomeProject extends Component {
     )
   }
 
+
   openChat() {
     ApplozicChat.openChat(
       {},
@@ -38,6 +39,15 @@ export default class AwesomeProject extends Component {
     )
   }
 
+  initiateChat(){
+    	  ApplozicChat.initiateChat(
+    	   {},
+          (response) => { console.log(response) },
+          (error) => { console.log(error) }
+        )
+      }
+
+	
   render() {
 
     return (
@@ -60,6 +70,9 @@ export default class AwesomeProject extends Component {
         <Text style={styles.instructions} onPress={this.openChat.bind(this)}>
           Open Chat
         </Text>
+         
+		<Text style={styles.instructions} onPress={this.initiateChat.bind(this)}>
+			INITIATE CHAT</Text>
       </View>
     );
   }
