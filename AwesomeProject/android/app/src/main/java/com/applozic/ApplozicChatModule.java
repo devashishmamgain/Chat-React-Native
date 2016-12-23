@@ -118,6 +118,60 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
 
 
 
+    @ReactMethod
+    public void contactUnreadCount(ReadableMap config, final Callback successCallback, Callback cancelCallback) {
+        Activity currentActivity = getCurrentActivity();
+
+        if (currentActivity == null) {
+            cancelCallback.invoke("Activity doesn't exist");
+            return;
+        }
+        if(config!=null && config.hasKey("userId")) {
+            int contactUnreadCount = new MessageDatabaseService(currentActivity).getUnreadMessageCountForContact(config.getString("userId"));
+            successCallback.invoke(contactUnreadCount);
+        }
+    }
+
+
+
+    @ReactMethod
+    public void channelUnreadCount(ReadableMap config, final Callback successCallback, Callback cancelCallback) {
+        Activity currentActivity = getCurrentActivity();
+
+        if (currentActivity == null) {
+            cancelCallback.invoke("Activity doesn't exist");
+            return;
+        }
+        if(config!=null && config.hasKey("channelKey")) {
+            int channelUnreadCount = new MessageDatabaseService(currentActivity).getUnreadMessageCountForChannel((Integer.parseInt(config.getString("channelKey"))));
+            successCallback.invoke(channelUnreadCount);
+        }
+
+    }
+
+
+    @ReactMethod
+    public void totalUnreadCount(ReadableMap config, final Callback successCallback, Callback cancelCallback) {
+        Activity currentActivity = getCurrentActivity();
+
+        if (currentActivity == null) {
+            cancelCallback.invoke("Activity doesn't exist");
+            return;
+        }
+        if(config!=null) {
+            int totalUnreadCount = new MessageDatabaseService(currentActivity).getTotalUnreadCount();
+            successCallback.invoke(totalUnreadCount);
+
+        }
+    }
+
+
+
+
+
+
+
+
 
 
 

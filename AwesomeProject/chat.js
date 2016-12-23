@@ -52,10 +52,33 @@ export default class AwesomeProject extends Component {
           	   {},
                 (response) => { console.log(response) },
                 (error) => { console.log(error) },
+              )}
 
-              )
 
-            }
+     contactUnreadCount(){
+          ApplozicChat.contactUnreadCount(
+          	   {'userId':'ak01'},
+                         (response) => { alert(response)  },   //console.log(response)
+                          (error) => { console.log(error) },
+          )}
+
+         channelUnreadCount(){
+          ApplozicChat.channelUnreadCount(
+                   	   {'channelKey':'1234'},
+                                  (response) => { alert(response) },
+                                   (error) => { console.log(error) },
+                   )}
+
+          totalUnreadCount(){
+           ApplozicChat.totalUnreadCount(
+                        {},
+                          (response) => { alert(response) },
+                          (error) => { console.log(error) },
+                             )
+
+                     }
+
+
 
 
 	
@@ -88,6 +111,15 @@ export default class AwesomeProject extends Component {
 
 		<Text style={styles.instructions} onPress={this.logoutUser.bind(this)}>
         			Logout User</Text>
+
+       <Text style={styles.instructions} onPress={this.contactUnreadCount.bind(this)}>
+                        	ContactUnreadCount</Text>
+
+        <Text style={styles.instructions} onPress={this.channelUnreadCount.bind(this)}>
+                                 	ChannelUnreadCount</Text>
+
+        <Text style={styles.instructions} onPress={this.totalUnreadCount.bind(this)}>
+                                 	TotalUnreadCount</Text>
 
 
 
