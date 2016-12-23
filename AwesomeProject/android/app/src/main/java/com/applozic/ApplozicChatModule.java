@@ -1,3 +1,4 @@
+
 package com.applozic;
 
 import android.app.Activity;
@@ -9,6 +10,7 @@ import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
 import com.applozic.mobicomkit.api.account.user.User;
 import com.applozic.mobicomkit.api.account.user.UserLoginTask;
 import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
+import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -74,6 +76,28 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         currentActivity.startActivity(intent);
     }
 
+
+    @ReactMethod
+    public void initiateChat(ReadableMap config, final Callback successCallback, Callback cancelCallback)
+    {
+        Activity currentActivity = getCurrentActivity();
+
+        if (currentActivity == null) {
+            cancelCallback.invoke("Activity doesn't exist");
+            return;
+        }
+
+        Intent intent = new Intent(currentActivity, ConversationActivity.class);
+        if(config!=null && config.hasKey("userId")) {
+            intent.putExtra(ConversationUIService.USER_ID, config.getString("userId"));
+        }
+        if(config!=null && config.hasKey("displayName")) {
+            intent.putExtra(ConversationUIService.DISPLAY_NAME, config.getString("displayName")); //put it for displaying the title.
+        }
+        currentActivity.startActivity(intent);
+    }
+
+
     @Override
     public void onActivityResult(Activity activity, final int requestCode, final int resultCode, final Intent intent) {
 
@@ -83,4 +107,5 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
     public void onNewIntent(Intent intent) {
 
     }
+
 }
