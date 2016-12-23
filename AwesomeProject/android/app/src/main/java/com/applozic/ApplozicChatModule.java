@@ -8,6 +8,7 @@ import android.net.Uri;
 
 import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
 import com.applozic.mobicomkit.api.account.user.User;
+import com.applozic.mobicomkit.api.account.user.UserClientService;
 import com.applozic.mobicomkit.api.account.user.UserLoginTask;
 import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
 import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
@@ -17,8 +18,11 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.applozic.mobicomkit.api.conversation.database.MessageDatabaseService;
+
 
 public class ApplozicChatModule extends ReactContextBaseJavaModule implements ActivityEventListener {
+
 
     public ApplozicChatModule(ReactApplicationContext reactContext) {
          super(reactContext);
@@ -96,6 +100,79 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         }
         currentActivity.startActivity(intent);
     }
+
+    @ReactMethod
+    public void logoutUser(ReadableMap config, final Callback successCallback, Callback cancelCallback)
+    {
+        Activity currentActivity = getCurrentActivity();
+
+        if (currentActivity == null) {
+            cancelCallback.invoke("Activity doesn't exist");
+            return;
+        }
+
+        new UserClientService(currentActivity).logout();
+    }
+
+
+
+
+
+    @ReactMethod
+    public void contactUnreadCount(ReadableMap config, final Callback successCallback, Callback cancelCallback) {
+        Activity currentActivity = getCurrentActivity();
+
+        if (currentActivity == null) {
+            cancelCallback.invoke("Activity doesn't exist");
+            return;
+        }
+        if(config!=null && config.hasKey("userId")) {
+            int contactUnreadCount = new MessageDatabaseService(currentActivity).getUnreadMessageCountForContact(config.getString("userId"));
+            successCallback.invoke(contactUnreadCount);
+        }
+    }
+
+
+
+    @ReactMethod
+    public void channelUnreadCount(ReadableMap config, final Callback successCallback, Callback cancelCallback) {
+        Activity currentActivity = getCurrentActivity();
+
+        if (currentActivity == null) {
+            cancelCallback.invoke("Activity doesn't exist");
+            return;
+        }
+        if(config!=null && config.hasKey("channelKey")) {
+            int channelUnreadCount = new MessageDatabaseService(currentActivity).getUnreadMessageCountForChannel((Integer.parseInt(config.getString("channelKey"))));
+            successCallback.invoke(channelUnreadCount);
+        }
+
+    }
+
+
+    @ReactMethod
+    public void totalUnreadCount(ReadableMap config, final Callback successCallback, Callback cancelCallback) {
+        Activity currentActivity = getCurrentActivity();
+
+        if (currentActivity == null) {
+            cancelCallback.invoke("Activity doesn't exist");
+            return;
+        }
+        if(config!=null) {
+            int totalUnreadCount = new MessageDatabaseService(currentActivity).getTotalUnreadCount();
+            successCallback.invoke(totalUnreadCount);
+
+        }
+    }
+
+
+
+
+
+
+
+
+
 
 
     @Override
