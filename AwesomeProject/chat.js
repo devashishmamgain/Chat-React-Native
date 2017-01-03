@@ -26,7 +26,7 @@ export default class AwesomeProject extends Component {
               		password:'',
               		displayName:'',
               		blank:'',
-                  loggedIn: 'false'
+                  loggedIn: false
 	              };
       this.openChat = this.openChat.bind(this);
       this.isUserLogIn = this.isUserLogIn.bind(this);
@@ -54,7 +54,7 @@ export default class AwesomeProject extends Component {
   	   (response) => {
                     window.alert('success');
                     this.openChat();
-                    this.setState({ loggedIn: 'true' });
+                    this.setState({ loggedIn: true });
                   },
        (error) => { window.alert(error) }
       )
@@ -75,7 +75,7 @@ export default class AwesomeProject extends Component {
        (response) => {
          //this.setState({userId:'',email:'',phoneNumber:'',password:'',displayName:''});
          alert("logout successful");
-         this.setState({loggedIn: 'false'});
+         this.setState({loggedIn: false});
        },
        (error) => {
                   alert("logout error");
@@ -121,7 +121,7 @@ export default class AwesomeProject extends Component {
 
     render() {
       let display = this.state.loggedIn;
-      if (display || display == 'true') {
+      if (display) {
         return (<View style={styles.container}>
                   <Text style={styles.titleText} onPress={this.logoutUser.bind(this)}>
                   Logout</Text>
@@ -131,7 +131,6 @@ export default class AwesomeProject extends Component {
       return (
         <View style={styles.container}>
             <ScrollView>
-            <Text>LoggedIn: {display}</Text>
         	<Text style={styles.titleText}>
             Applozic
           </Text>
