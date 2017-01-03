@@ -32,10 +32,8 @@ export default class AwesomeProject extends React.Component{
 	this.openChat = this.openChat.bind(this);
     this.isUserLogIn=this.isUserLogIn.bind(this);
     this.logoutUser=this.logoutUser.bind(this);
-	this.updateState=this.updateState.bind(this);
 	this.initiateChat=this.initiateChat.bind(this);
 	this.chatLogin=this.chatLogin.bind(this);
- 	this.onClick=this.onClick.bind(this);
   }
   
 componentDidMount() {
@@ -64,7 +62,7 @@ chatLogin() {
 isUserLogIn(){
     ApplozicChat.isUserLogIn(
     {},
-    (response) => {alert(response),this.setState({ result: response });},
+    (response) => {this.setState({ result: response });},
     (error) => { console.log(error) },
    )
   }
@@ -73,7 +71,7 @@ logoutUser(){
     ApplozicChat.logoutUser(
     {},
     (response) => {this.setState({userId:'',email:'',phoneNumber:'',pass_word:'',displayName:''})
-	              ,alert("logout successful"),this.setState({result: false})},
+	              ,this.setState({result: false})},
     (error) => {console.log(error)},
    )
   }
@@ -97,7 +95,7 @@ initiateChat(){
 contactUnreadCount(){
     ApplozicChat.contactUnreadCount(
     {'userId':'ak01'},
-    (response) => {alert(response)},
+    (response) => {console.log(response)},
     (error) => {console.log(error)},
    )
   }
@@ -105,7 +103,7 @@ contactUnreadCount(){
 channelUnreadCount(){
     ApplozicChat.channelUnreadCount(
     {'channelKey':'1234'},
-    (response) => {alert(response)},
+    (response) => {console.log(response)},
     (error) => {console.log(error)},
    )
   }
@@ -113,7 +111,7 @@ channelUnreadCount(){
 totalUnreadCount(){
     ApplozicChat.totalUnreadCount(
     {},
-    (response) => { alert(response) },
+    (response) => { console.log(response) },
     (error) => { console.log(error) },
    )
  }
