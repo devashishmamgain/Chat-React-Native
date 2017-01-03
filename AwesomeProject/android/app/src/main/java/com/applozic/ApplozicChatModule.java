@@ -30,15 +30,10 @@ import com.applozic.mobicomkit.api.conversation.database.MessageDatabaseService;
 
 public class ApplozicChatModule extends ReactContextBaseJavaModule implements ActivityEventListener{
 
-
     public ApplozicChatModule(ReactApplicationContext reactContext) {
          super(reactContext);
          reactContext.addActivityEventListener(this);
-     }
-
-     
-    
-
+    }
 
     @Override
     public String getName() {
@@ -115,8 +110,7 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
     }
 
     @ReactMethod
-    public void logoutUser(ReadableMap config, final Callback successCallback,final Callback cancelCallback)
-    {
+    public void logoutUser(ReadableMap config, final Callback successCallback,final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
@@ -125,10 +119,11 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         }
 		
         new UserClientService(currentActivity).logout();
+        successCallback.invoke("true");
     }
 
     @ReactMethod
-    public void contactUnreadCount(ReadableMap config, final Callback successCallback,final Callback cancelCallback) {
+    public void contactUnreadCount(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
@@ -170,15 +165,11 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
     }
     
 	@ReactMethod
-	public boolean isUserLogIn(ReadableMap config, final Callback successCallback,final Callback cancelCallback)
-	{
+	public void isUserLogIn(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
 		Activity currentActivity = getCurrentActivity();
         MobiComUserPreference mobiComUserPreference=MobiComUserPreference.getInstance(currentActivity);
-        //boolean output= 
-	   return	mobiComUserPreference.isLoggedIn();
-	    //successCallback.invoke(""+output);
-	  
-	}
+        successCallback.invoke(mobiComUserPreference.isLoggedIn());
+    }
 
    
    public void onBackPressed() {
