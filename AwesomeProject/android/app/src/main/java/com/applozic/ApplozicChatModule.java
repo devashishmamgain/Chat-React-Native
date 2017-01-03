@@ -1,9 +1,16 @@
+
 package com.applozic;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
+
+import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.ReactPackage;
+import com.facebook.react.ReactRootView;
+import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 
 import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
 import com.applozic.mobicomkit.api.account.user.MobiComUserPreference;
@@ -12,7 +19,6 @@ import com.applozic.mobicomkit.api.account.user.UserClientService;
 import com.applozic.mobicomkit.api.account.user.UserLoginTask;
 import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
 import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
-import com.applozic.mobicommons.people.channel.Conversation;
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -20,7 +26,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.applozic.mobicomkit.api.conversation.database.MessageDatabaseService;
-import com.applozic.mobicomkit.feed.TopicDetail;
+
 
 public class ApplozicChatModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
@@ -37,12 +43,14 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
     @ReactMethod
     public void login(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
+
         if (currentActivity == null) {
             cancelCallback.invoke("Activity doesn't exist");
             return;
         }
 
         UserLoginTask.TaskListener listener = new UserLoginTask.TaskListener() {
+
             @Override
             public void onSuccess(RegistrationResponse registrationResponse, Context context) {
                 //After successful registration with Applozic server the callback will come here
@@ -53,6 +61,7 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
             public void onFailure(RegistrationResponse registrationResponse, Exception exception) {
                 //If any failure in registration the callback  will come here
                 cancelCallback.invoke("failure");
+
             }
         };
 
@@ -65,15 +74,18 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         user.setImageLink("");//optional,pass your image link
         user.setApplicationId("applozic-sample-app");
         new UserLoginTask(user, listener, currentActivity).execute((Void) null);
+
     }
 
     @ReactMethod
     public void openChat(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
+
         if (currentActivity == null) {
             cancelCallback.invoke("Activity doesn't exist");
             return;
         }
+
         Intent intent = new Intent(currentActivity, ConversationActivity.class);
         currentActivity.startActivity(intent);
     }
@@ -81,10 +93,12 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
     @ReactMethod
     public void initiateChat(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
+
         if (currentActivity == null) {
             cancelCallback.invoke("Activity doesn't exist");
             return;
         }
+
         Intent intent = new Intent(currentActivity, ConversationActivity.class);
         if (config != null && config.hasKey("userId")) {
             intent.putExtra(ConversationUIService.USER_ID, config.getString("userId"));
@@ -98,17 +112,20 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
     @ReactMethod
     public void logoutUser(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
+
         if (currentActivity == null) {
             cancelCallback.invoke("Activity doesn't exist");
             return;
         }
+
         new UserClientService(currentActivity).logout();
-        successCallback.invoke("success");
+        successCallback.invoke("true");
     }
 
     @ReactMethod
     public void contactUnreadCount(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
+
         if (currentActivity == null) {
             cancelCallback.invoke("Activity doesn't exist");
             return;
@@ -122,6 +139,7 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
     @ReactMethod
     public void channelUnreadCount(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
+
         if (currentActivity == null) {
             cancelCallback.invoke("Activity doesn't exist");
             return;
@@ -135,6 +153,7 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
     @ReactMethod
     public void totalUnreadCount(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
+
         if (currentActivity == null) {
             cancelCallback.invoke("Activity doesn't exist");
             return;
@@ -152,9 +171,13 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         successCallback.invoke(mobiComUserPreference.isLoggedIn());
     }
 
+
+    @Override
     public void onActivityResult(Activity activity, final int requestCode, final int resultCode, final Intent intent) {
     }
 
+    @Override
     public void onNewIntent(Intent intent) {
     }
+
 }

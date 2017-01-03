@@ -1,55 +1,51 @@
 //'use strict';
 import React, { Component } from 'react';
-import { hardwareBackPress, exitApp } from 'react-native-back-android';
-import { BackAndroid } from 'react-native';
 import {
   AppRegistry,
   StyleSheet,
-  AppState,
   Text,
   View,
   Button,
-  TextInput,
+   TextInput,
   ScrollView,
   NativeModules
 } from 'react-native';
 
-//module.exports = NativeModules.ImagePicker;
-var ImagePicker  = NativeModules.ImagePicker;
 var ApplozicChat = NativeModules.ApplozicChat;
 
-export default class AwesomeProject extends React.Component{
 
-	constructor(props) {
+export default class AwesomeProject extends Component {
+
+  constructor(props) {
     super(props);
-    this.state = 
-		{userId:'',
-		 email :'',
-		 phoneNumer:'',
-		 pass_word:'',
-		 displayName:'',		 
-         result:false };
+    this.state = {
+                  userId:'',
+              		email :'',
+              		phoneNumer:'',
+              		password:'',
+              		displayName:'',
+              		blank:'',
+                    result:false };
 	this.openChat = this.openChat.bind(this);
     this.isUserLogIn=this.isUserLogIn.bind(this);
     this.logoutUser=this.logoutUser.bind(this);
 	this.initiateChat=this.initiateChat.bind(this);
-	this.chatLogin=this.chatLogin.bind(this);
-  }
-  
-componentDidMount() {
-    this.isUserLogIn;
-  }
-  
-openImage() {
-    ImagePicker.openSelectDialog(
-    {}, // no config yet
-    (uri) => { console.log(uri) },
-    (error) => { console.log(error) },
-   )
- }
+	this.chatLogin=this.chatLogin.bind(this);  }
 
-chatLogin() {
-	if(this.state.userId.length>0 && this.state.pass_word.length>0)
+  componentDidMount() {
+    this.isUserLogIn();
+  }
+
+  openChat() {
+    ApplozicChat.openChat(
+      {},
+      (response) => { console.log(response) },
+      (error) => { console.log(error) }
+    )
+  }
+
+  chatLogin() {
+  	if(this.state.userId.length>0 && this.state.pass_word.length>0)
 	{
     ApplozicChat.login(
     {'userId':this.state.userId,'email':'','phoneNumber':'','password':this.state.pass_word,'displayName':''},
@@ -58,16 +54,16 @@ chatLogin() {
     )
     }else{alert("Please Enter UserId & Password")};
   }
- 
-isUserLogIn(){
-    ApplozicChat.isUserLogIn(
-    {},
-    (response) => {this.setState({ result: response });},
-    (error) => { console.log(error) },
-   )
-  }
- 
-logoutUser(){
+
+  initiateChat() {
+    ApplozicChat.initiateChat(
+      {},
+      (response) => { console.log(response) },
+      (error) => { console.log(error) }
+     )
+   }
+
+   logoutUser(){
     ApplozicChat.logoutUser(
     {},
     (response) => {this.setState({userId:'',email:'',phoneNumber:'',pass_word:'',displayName:''})
@@ -76,59 +72,55 @@ logoutUser(){
    )
   }
 
-openChat() {
-    ApplozicChat.openChat(
-    {},
-    (response) => {console.log(response)},
-    (error) => {console.log(error)},
-   )
-  }
-  
-initiateChat(){
-    ApplozicChat.initiateChat(
-    {},
-    (response) => {console.log(response)},
-    (error) => {console.log(error)},
-   )
-  }
 
-contactUnreadCount(){
-    ApplozicChat.contactUnreadCount(
-    {'userId':'ak01'},
-    (response) => {console.log(response)},
-    (error) => {console.log(error)},
-   )
-  }
+   contactUnreadCount(){
+     ApplozicChat.contactUnreadCount(
+      {'userId':'ak01'},
+      (response) => { console.log(response)  },
+      (error) => { console.log(error) },
+     )
+   }
 
-channelUnreadCount(){
-    ApplozicChat.channelUnreadCount(
-    {'channelKey':'1234'},
-    (response) => {console.log(response)},
-    (error) => {console.log(error)},
-   )
-  }
+   channelUnreadCount(){
+     ApplozicChat.channelUnreadCount(
+      {'channelKey':'1234'},
+      (response) => {console.log(response)},
+      (error) => { console.log(error) },
+     )
+   }
 
-totalUnreadCount(){
-    ApplozicChat.totalUnreadCount(
+   totalUnreadCount(){
+     ApplozicChat.totalUnreadCount(
+      {},
+      (response) => { console.log(response) },
+      (error) => { console.log(error) },
+     )
+   }
+
+  isUserLogIn(){
+    ApplozicChat.isUserLogIn(
     {},
-    (response) => { console.log(response) },
+    (response) => {this.setState({ result: response });},
     (error) => { console.log(error) },
    )
- }
+  }
 
-render() {
+
+    render() {
       let display = this.state.result;
       if (display) {
-        return (    
-        <View style={styles.container}>		
+        return (
+		 <View style={styles.container}>		
 		<Text style={styles.titleText}>  Applozic </Text>
         <Text style={styles.baseText} > Demo App   </Text>
         <Text style={styles.btn} onPress={this.initiateChat}> Chat Logs  </Text>
 		<Text style={styles.btn} onPress={this.logoutUser}> LogOut </Text>	
         </View>
-	   );}
+	  
+			  );
+      }
 
-       return (
+      return (
         <View  style={styles.container}>
         <ScrollView>
 	    <Text style={styles.titleText}>Applozic </Text>
@@ -182,7 +174,7 @@ render() {
 		underlineColorAndroid='transparent'
         value={this.state.displayName}
 		onChangeText={displayName=> this.setState({displayName})}/> 
-      
+
 	    <Button
         onPress={this.chatLogin}
         title="Login/SignUp"
@@ -192,18 +184,16 @@ render() {
     	
  		</ScrollView>	      
         </View> 
-	  );
-   }
-}
+            );
+        }
+    }
 
 const styles = StyleSheet.create({
-
-container:{
+   container: {
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#4D394B',
   },
-  
 btn:{
 	fontSize: 23,
     fontWeight: 'bold',
@@ -212,29 +202,32 @@ btn:{
     alignSelf:'center', 
   },
 
-baseText:{
-    fontFamily: 'Cochin',
+  baseText: {
+   fontFamily: 'Cochin',
 	color:'#fff',
-    marginBottom:25,
-    alignSelf:'center',
+     marginBottom:25,
+   alignSelf:'center',
+
+
   },
-  
-titleText:{
+  titleText: {
     fontSize: 25,
     fontWeight: 'bold',
     color:'#fff',
-    marginTop: 15,
-    alignSelf:'center',
-  },
-   
-inputText:{
-    width:330,
-    height: 40, 
+     marginTop: 15,
+   alignSelf:'center',
+    },
+   inputText:{
+   width:330,
+   height: 40,
     backgroundColor:'#fff',
     marginBottom: 6,
-	padding: 10,   
+	padding: 10,
     fontSize: 20,
-    marginLeft: 10,
+     marginLeft: 10,
     marginRight:10,
+
+
   },
+
 });
