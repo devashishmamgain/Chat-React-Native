@@ -170,7 +170,6 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         MobiComUserPreference mobiComUserPreference=MobiComUserPreference.getInstance(currentActivity);
         successCallback.invoke(mobiComUserPreference.isLoggedIn());
     }
-
    
    public void onBackPressed() {
        
