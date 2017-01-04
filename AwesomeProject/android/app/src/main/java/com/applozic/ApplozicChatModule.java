@@ -4,43 +4,28 @@ package com.applozic;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-
-
-import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.ReactPackage;
-import com.facebook.react.ReactRootView;
-import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 
 import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
 import com.applozic.mobicomkit.api.account.user.MobiComUserPreference;
 import com.applozic.mobicomkit.api.account.user.User;
 import com.applozic.mobicomkit.api.account.user.UserClientService;
 import com.applozic.mobicomkit.api.account.user.UserLoginTask;
-import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
+import com.applozic.mobicomkit.api.conversation.database.MessageDatabaseService;
 import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
+import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
-import com.applozic.mobicomkit.api.conversation.database.MessageDatabaseService;
 
 
-<<<<<<< HEAD
 public class ApplozicChatModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
     public ApplozicChatModule(ReactApplicationContext reactContext) {
         super(reactContext);
         reactContext.addActivityEventListener(this);
-=======
-public class ApplozicChatModule extends ReactContextBaseJavaModule implements ActivityEventListener{
-
-    public ApplozicChatModule(ReactApplicationContext reactContext) {
-         super(reactContext);
-         reactContext.addActivityEventListener(this);
->>>>>>> 4233090d8d85ff9969cc1c2a12c8ad2659897529
     }
 
     @Override
@@ -118,11 +103,7 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
     }
 
     @ReactMethod
-<<<<<<< HEAD
     public void logoutUser(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
-=======
-    public void logoutUser(ReadableMap config, final Callback successCallback,final Callback cancelCallback) {
->>>>>>> 4233090d8d85ff9969cc1c2a12c8ad2659897529
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
@@ -175,17 +156,7 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
             successCallback.invoke(totalUnreadCount);
         }
     }
-<<<<<<< HEAD
 
-    @ReactMethod
-    public void isUserLogIn(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
-        Activity currentActivity = getCurrentActivity();
-        MobiComUserPreference mobiComUserPreference = MobiComUserPreference.getInstance(currentActivity);
-        successCallback.invoke(mobiComUserPreference.isLoggedIn());
-    }
-
-=======
-    
 	@ReactMethod
 	public void isUserLogIn(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
 		Activity currentActivity = getCurrentActivity();
@@ -196,7 +167,6 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
    public void onBackPressed() {
        
    }    
->>>>>>> 4233090d8d85ff9969cc1c2a12c8ad2659897529
 
     @Override
     public void onActivityResult(Activity activity, final int requestCode, final int resultCode, final Intent intent) {
