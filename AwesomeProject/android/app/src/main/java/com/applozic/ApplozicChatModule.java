@@ -28,11 +28,19 @@ import com.facebook.react.bridge.ReadableMap;
 import com.applozic.mobicomkit.api.conversation.database.MessageDatabaseService;
 
 
+<<<<<<< HEAD
+public class ApplozicChatModule extends ReactContextBaseJavaModule implements ActivityEventListener {
+
+    public ApplozicChatModule(ReactApplicationContext reactContext) {
+        super(reactContext);
+        reactContext.addActivityEventListener(this);
+=======
 public class ApplozicChatModule extends ReactContextBaseJavaModule implements ActivityEventListener{
 
     public ApplozicChatModule(ReactApplicationContext reactContext) {
          super(reactContext);
          reactContext.addActivityEventListener(this);
+>>>>>>> 4233090d8d85ff9969cc1c2a12c8ad2659897529
     }
 
     @Override
@@ -41,13 +49,13 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
     }
 
     @ReactMethod
-    public void login(ReadableMap config, final Callback successCallback,final Callback cancelCallback) {
-      Activity currentActivity = getCurrentActivity();
+    public void login(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
+        Activity currentActivity = getCurrentActivity();
 
-      if (currentActivity == null) {
-          cancelCallback.invoke("Activity doesn't exist");
-          return;
-      }
+        if (currentActivity == null) {
+            cancelCallback.invoke("Activity doesn't exist");
+            return;
+        }
 
         UserLoginTask.TaskListener listener = new UserLoginTask.TaskListener() {
 
@@ -60,9 +68,10 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
             @Override
             public void onFailure(RegistrationResponse registrationResponse, Exception exception) {
                 //If any failure in registration the callback  will come here
-				cancelCallback.invoke("failure");
-			
-			}};
+                cancelCallback.invoke("failure");
+
+            }
+        };
 
         User user = new User();
         user.setUserId(config.getString("userId")); //userId it can be any unique user identifier
@@ -73,11 +82,11 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         user.setImageLink("");//optional,pass your image link
         user.setApplicationId("applozic-sample-app");
         new UserLoginTask(user, listener, currentActivity).execute((Void) null);
-        
-	}
+
+    }
 
     @ReactMethod
-    public void openChat(ReadableMap config, final Callback successCallback,final Callback cancelCallback) {
+    public void openChat(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
@@ -90,8 +99,7 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
     }
 
     @ReactMethod
-    public void initiateChat(ReadableMap config, final Callback successCallback,final Callback cancelCallback)
-    {
+    public void initiateChat(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
@@ -100,24 +108,28 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
         }
 
         Intent intent = new Intent(currentActivity, ConversationActivity.class);
-        if(config!=null && config.hasKey("userId")) {
+        if (config != null && config.hasKey("userId")) {
             intent.putExtra(ConversationUIService.USER_ID, config.getString("userId"));
         }
-        if(config!=null && config.hasKey("displayName")) {
+        if (config != null && config.hasKey("displayName")) {
             intent.putExtra(ConversationUIService.DISPLAY_NAME, config.getString("displayName")); //put it for displaying the title.
         }
         currentActivity.startActivity(intent);
     }
 
     @ReactMethod
+<<<<<<< HEAD
+    public void logoutUser(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
+=======
     public void logoutUser(ReadableMap config, final Callback successCallback,final Callback cancelCallback) {
+>>>>>>> 4233090d8d85ff9969cc1c2a12c8ad2659897529
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
             cancelCallback.invoke("Activity doesn't exist");
             return;
         }
-		
+
         new UserClientService(currentActivity).logout();
         successCallback.invoke("true");
     }
@@ -130,39 +142,49 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
             cancelCallback.invoke("Activity doesn't exist");
             return;
         }
-        if(config!=null && config.hasKey("userId")) {
+        if (config != null && config.hasKey("userId")) {
             int contactUnreadCount = new MessageDatabaseService(currentActivity).getUnreadMessageCountForContact(config.getString("userId"));
             successCallback.invoke(contactUnreadCount);
         }
     }
 
     @ReactMethod
-    public void channelUnreadCount(ReadableMap config, final Callback successCallback,final Callback cancelCallback) {
+    public void channelUnreadCount(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
             cancelCallback.invoke("Activity doesn't exist");
             return;
         }
-        if(config!=null && config.hasKey("channelKey")) {
+        if (config != null && config.hasKey("channelKey")) {
             int channelUnreadCount = new MessageDatabaseService(currentActivity).getUnreadMessageCountForChannel((Integer.parseInt(config.getString("channelKey"))));
             successCallback.invoke(channelUnreadCount);
         }
     }
 
     @ReactMethod
-    public void totalUnreadCount(ReadableMap config, final Callback successCallback,final Callback cancelCallback) {
+    public void totalUnreadCount(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
             cancelCallback.invoke("Activity doesn't exist");
             return;
         }
-        if(config!=null) {
+        if (config != null) {
             int totalUnreadCount = new MessageDatabaseService(currentActivity).getTotalUnreadCount();
             successCallback.invoke(totalUnreadCount);
         }
     }
+<<<<<<< HEAD
+
+    @ReactMethod
+    public void isUserLogIn(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
+        Activity currentActivity = getCurrentActivity();
+        MobiComUserPreference mobiComUserPreference = MobiComUserPreference.getInstance(currentActivity);
+        successCallback.invoke(mobiComUserPreference.isLoggedIn());
+    }
+
+=======
     
 	@ReactMethod
 	public void isUserLogIn(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
@@ -175,11 +197,14 @@ public class ApplozicChatModule extends ReactContextBaseJavaModule implements Ac
    public void onBackPressed() {
        
    }    
+>>>>>>> 4233090d8d85ff9969cc1c2a12c8ad2659897529
 
     @Override
-    public void onActivityResult(Activity activity, final int requestCode, final int resultCode, final Intent intent) {}
+    public void onActivityResult(Activity activity, final int requestCode, final int resultCode, final Intent intent) {
+    }
 
     @Override
-    public void onNewIntent(Intent intent) {}
+    public void onNewIntent(Intent intent) {
+    }
 
 }
