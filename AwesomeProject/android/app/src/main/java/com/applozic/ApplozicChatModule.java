@@ -4,12 +4,14 @@ package com.applozic;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
 import com.applozic.mobicomkit.api.account.user.MobiComUserPreference;
 import com.applozic.mobicomkit.api.account.user.User;
 import com.applozic.mobicomkit.api.account.user.UserClientService;
 import com.applozic.mobicomkit.api.account.user.UserLoginTask;
+import com.applozic.mobicomkit.api.account.user.PushNotificationTask;
 import com.applozic.mobicomkit.api.conversation.database.MessageDatabaseService;
 import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
 import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
@@ -19,6 +21,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.applozic.mobicomkit.api.account.register.RegisterUserClientService;
+import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
 
 
 public class ApplozicChatModule extends ReactContextBaseJavaModule implements ActivityEventListener {
@@ -34,8 +38,8 @@ public String getName() {
 }
 
 @ReactMethod
-public void login(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
-        Activity currentActivity = getCurrentActivity();
+public void login(final ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
+        final Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
                 cancelCallback.invoke("Activity doesn't exist");
@@ -43,10 +47,25 @@ public void login(ReadableMap config, final Callback successCallback, final Call
         }
 
         UserLoginTask.TaskListener listener = new UserLoginTask.TaskListener() {
-
                 @Override
                 public void onSuccess(RegistrationResponse registrationResponse, Context context) {
                         //After successful registration with Applozic server the callback will come here
+                        if(MobiComUserPreference.getInstance(currentActivity).isRegistered()) {
+
+                                PushNotificationTask pushNotificationTask = null;
+
+                                PushNotificationTask.TaskListener listener = new PushNotificationTask.TaskListener() {
+                                        public void onSuccess(RegistrationResponse registrationResponse) {
+
+                                        }
+                                        @Override
+                                        public void onFailure(RegistrationResponse registrationResponse, Exception exception) {
+                                        }
+                                };
+                                pushNotificationTask = new PushNotificationTask(config.getString("token"), listener, currentActivity);
+                                pushNotificationTask.execute((Void) null);
+                        }
+
                         successCallback.invoke("success");
                 }
 
@@ -67,7 +86,6 @@ public void login(ReadableMap config, final Callback successCallback, final Call
         user.setImageLink("");//optional,pass your image link
         user.setApplicationId("applozic-sample-app");
         new UserLoginTask(user, listener, currentActivity).execute((Void) null);
-
 }
 
 @ReactMethod
@@ -81,6 +99,7 @@ public void openChat(ReadableMap config, final Callback successCallback, final C
 
         Intent intent = new Intent(currentActivity, ConversationActivity.class);
         currentActivity.startActivity(intent);
+        successCallback.invoke("openChat Successs");
 }
 
 @ReactMethod
@@ -162,6 +181,24 @@ public void isUserLogIn(ReadableMap config, final Callback successCallback, fina
         Activity currentActivity = getCurrentActivity();
         MobiComUserPreference mobiComUserPreference=MobiComUserPreference.getInstance(currentActivity);
         successCallback.invoke(mobiComUserPreference.isLoggedIn());
+}
+
+@ReactMethod
+public void tokenRefresh(ReadableMap config, final Callback successCallback, final Callback cancelCallback) {
+        Activity currentActivity = getCurrentActivity();
+        if (MobiComUserPreference.getInstance(currentActivity).isRegistered() && config.getString("token")!=null) {
+                try {
+                        new RegisterUserClientService(currentActivity).updatePushNotificationId(config.getString("token"));
+                        successCallback.invoke("tokenRefreshsuccess");
+                } catch (Exception e) {
+                        e.printStackTrace();
+
+                }
+
+        }
+        else{
+                cancelCallback.invoke("token is zero in ref token");
+        }
 }
 
 @Override
