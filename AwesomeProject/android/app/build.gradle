@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 
+
 import com.android.build.OutputFile
 
 /**
@@ -129,10 +130,15 @@ dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile 'com.applozic.communication.uiwidget:mobicomkitui:4.67'
+    compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.google.firebase:firebase-messaging:9.0.2'
-    compile 'com.google.android.gms:play-services-location:9.0.2'
-    compile 'com.google.android.gms:play-services-maps:9.0.2'
+    compile project(':react-native-fcm')
+    compile 'com.google.android.gms:play-services-location:10.0.1'
+    compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile "com.facebook.react:react-native:+"  // From node_modules
+    compile ('com.google.android.gms:play-services-gcm:10.0.1') {
+       force = true;
+   }
 }
 
 // Run this once to be able to run the application with BUCK
